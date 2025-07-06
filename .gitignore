@@ -2,6 +2,7 @@
 /releases
 /.versions
 
+/*.gdb
 *.iso
 *.img
 *.xz

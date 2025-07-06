@@ -9,6 +9,10 @@ QEMU_FLAGS= -enable-kvm \
 	-display curses \
 	-drive file=$(DISK),format=qcow2
 
+# kvr.gdb base path used to source files
+GDB_BPATH ?= $(PWD)
+GDB_COMMANDS := $(wildcard debug/commands/*.gdb)
+
 define url
 	$(subst {major},$(word 1,$(subst ., ,$1)),$(subst {version},$1,$2))
 endef
@@ -43,6 +47,13 @@ switch: check_version
 
 linux-$(VERSION).tar.xz:
 	wget $(call url,$(VERSION),$(SRC_URL)) -O linux-$(VERSION).tar.xz
+
+kvr.gdb: $(GDB_COMMANDS)
+	@rm -f $@
+
+	@for cmd in $(GDB_COMMANDS); do \
+		echo "source \"$(GDB_BPATH)/$$cmd\"" >> $@; \
+	done
 
 
 .PHONY: check_version
