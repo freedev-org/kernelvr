@@ -1,8 +1,10 @@
 /linux
 /releases
+/host
 /.versions
 
 /*.gdb
 *.iso
 *.img
+*.gz
 *.xz
