@@ -23,7 +23,7 @@ function step() {
     local name="$1"
     shift 1
 
-    echo -n "$name: Running..."
+    echo "$name: Running..."
     if "step_$name" "$@"; then
         echo -e "$name: ${COLOR_GREEN}DONE${COLOR_NORMAL}"
         return 0
@@ -41,10 +41,18 @@ function step_config() {
     done
 
     make olddefconfig
+    sed -i "s/=m/=y/g" .config
 }
 
 function step_build() {
-    make -j$(nproc)
+    env -i \
+        PATH="$PATH" \
+        HOME="$HOME" \
+        PWD="$PWD" \
+        USER="$USER" \
+        SHELL="$SHELL" \
+        make -j$(nproc)
+        # make V=1 -j1
 }
 
 # Usage: step_release <version>
