@@ -13,9 +13,9 @@ function main() {
 
     cd "$src"
 
-    step config
-    step build
-    step release "$version"
+    step config || exit
+    step build || exit
+    step release "$version" || exit
 }
 
 # Usage: step <step_name>
@@ -26,8 +26,10 @@ function step() {
     echo -n "$name: Running..."
     if "step_$name" "$@"; then
         echo -e "$name: ${COLOR_GREEN}DONE${COLOR_NORMAL}"
+        return 0
     else
         echo -e "$name: ${COLOR_RED}ERROR $?${COLOR_NORMAL}"
+        return 1
     fi
 }
 
