@@ -1,0 +1,7 @@
+/linux
+/releases
+/.versions
+
+*.iso
+*.img
+*.xz
