@@ -5,12 +5,11 @@ end
 
 define kvr_rstart
     if $argc == 0
-        set $addr = ":1234"
+        target remote :1234
     else
-        set $addr = $arg0
+        target remote $arg0
     end
 
-    target remote $addr
     kvr_start
 end
 
