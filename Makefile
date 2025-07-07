@@ -5,6 +5,7 @@ RAMDISK_URL=https://storage.googleapis.com/kernelctf-build/files/ramdisk_v1.img
 HOST_PATH=./host
 KSYSCTL_FLAGS=sysctl.net.core.bpf_jit_harden=2 sysctl.kernel.io_uring_disabled=2
 KCONFIG_FLAGS=console=ttyS0 root=/dev/vda1 rootfstype=ext4 rootflags=discard
+KINIT=/bin/bash
 QEMU=qemu-system-x86_64
 QEMU_FLAGS= -enable-kvm \
 	-m 1024 \
