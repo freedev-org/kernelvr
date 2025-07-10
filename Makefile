@@ -73,12 +73,14 @@ rootfs.img:
 ramdisk.img:
 	wget $(RAMDISK_URL) -O "$@"
 
-kvr.gdb: $(GDB_COMMANDS)
+kvr.gdb: $(GDB_COMMANDS) debug/main.gdb
 	@rm -f $@
 
 	@for cmd in $(GDB_COMMANDS); do \
 		echo "source $(GDB_BPATH)/$$cmd" >> $@; \
 	done
+
+	@(echo; cat debug/main.gdb) >> $@
 
 
 .PHONY: check_version
