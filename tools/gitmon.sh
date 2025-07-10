@@ -1,8 +1,5 @@
 #!/bin/bash
 
-# gitmon init https://abc.git
-# gitmon
-
 function show_help() {
 cat <<:EOF
 Script to monitor changes on a git repository.
