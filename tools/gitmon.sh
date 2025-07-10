@@ -123,19 +123,20 @@ function cmd_update() {
     git pull
 
     for path in .git/gitmon/*; do
+        [ ! -d $path ] && continue
+
         IFS=';' read -e filter_path newest_commit < "$path/info"
 
         git rev-list $newest_commit..HEAD -- $filter_path > $tempfile
         [ ! -s $tempfile ] && continue
 
+        [ -n "$callback" ] && trigger_callback "$tempfile" $callback
+
         cat "$path/commits.log" >> $tempfile
-        mv -f "$tempfile" "$path/commits.log"
+        cp -f "$tempfile" "$path/commits.log"
 
         local newest_commit=$(head -n1 "$path/commits.log")
         echo "$filter_path;$newest_commit" > "$path/info"
-
-        [ -z "$callback" ] && continue
-        trigger_callback "$tempfile" $callback
     done
 }
 
@@ -178,10 +179,10 @@ function trigger_callback() {
     shift 1
     local callback="$@"
 
-    while read -e commit; do
-        local cmd="$(sed -E "s/\{commit\}/$commit/g")"
-        eval "$cmd"
-    done < $filepath
+    tac $filepath | while read -e commit; do
+        local cmd="$(sed -E "s/\{commit\}/$commit/g" <<< "$callback")"
+        (eval "$cmd")
+    done
 }
 
 function check_git() {
