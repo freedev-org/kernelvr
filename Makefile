@@ -26,6 +26,8 @@ QEMU_FLAGS= -enable-kvm \
 GDB_BPATH ?= $(PWD)
 GDB_COMMANDS := $(wildcard debug/commands/*.gdb)
 
+SRC=./linux
+
 define url
 	$(subst {major},$(word 1,$(subst ., ,$1)),$(subst {version},$1,$2))
 endef
@@ -54,6 +56,13 @@ switch: check_version
 	@[ ! -d .versions/$(VERSION) ] && echo "Error: Version $(VERSION) not found. Download it first!" >&2 && exit 1 || true
 	rm ./linux
 	ln -fs $(PWD)/.versions/$(VERSION) ./linux
+
+# Install: sudo apt install global cscope universal-ctags
+codesearch-index:
+	$(MAKE) -C $(SRC) tags cscope
+
+codesearch:
+	cd $(SRC) && cscope -d
 
 .versions/$(VERSION): .versions linux-$(VERSION).tar.xz
 	tar -xf linux-$(VERSION).tar.xz -C .versions
