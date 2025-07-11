@@ -58,11 +58,25 @@ switch: check_version
 	ln -fs $(PWD)/.versions/$(VERSION) ./linux
 
 # Install: sudo apt install global cscope universal-ctags
+.PHONY: codesearch-index
 codesearch-index:
 	$(MAKE) -C $(SRC) tags cscope
 
+.PHONY: codesearch
 codesearch:
 	cd $(SRC) && cscope -d
+
+.PHONY: codebrowse
+codebrowse:
+	docker run --rm -it -v ./linux:/workspace:ro freedevorg/linux-codebrowse
+
+.PHONY: docker-build
+docker-build:
+ifndef NAME
+	@echo "Error: NAME is a required argument. Try: make docker-build NAME=tag-name" >&2
+	@exit 1
+endif
+	docker build -t freedevorg/$(NAME) -f docker/$(NAME).dockerfile .
 
 .versions/$(VERSION): .versions linux-$(VERSION).tar.xz
 	tar -xf linux-$(VERSION).tar.xz -C .versions
