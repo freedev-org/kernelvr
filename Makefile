@@ -68,7 +68,7 @@ codesearch:
 
 .PHONY: codebrowse
 codebrowse:
-	docker run --rm -it -v ./linux:/workspace:ro freedevorg/linux-codebrowse
+	docker run --rm -it -v $(SRC):/workspace:ro freedevorg/linux-codebrowse
 
 .PHONY: docker-build
 docker-build:
