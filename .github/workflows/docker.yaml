@@ -1,0 +1,26 @@
+name: Build and Push Docker Images
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "docker/*.dockerfile"
+
+jobs:
+  docker:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Log in to Docker Hub
+        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "freedevorg" --password-stdin
+
+      - name: Build and push all Dockerfiles
+        run: |
+          for FILE in docker/*.dockerfile; do
+            export NAME=$(basename "$FILE" .dockerfile)
+            make docker-build
+            docker push freedevorg/$NAME
+          done
