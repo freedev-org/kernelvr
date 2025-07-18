@@ -17,6 +17,7 @@ if filereadable("cscope.out")
   silent! cs add cscope.out
 endif
 
+vmap <C-c> :w! /cb<CR>
 nnoremap <2-LeftMouse> <C-]>
 nnoremap <leader>] :tab split \| :tag <C-R>=expand("<cword>")<CR><CR>
 nnoremap <leader>q :tabclose<CR>
@@ -24,6 +25,7 @@ nnoremap <leader>q :tabclose<CR>
 nnoremap <C-s> :cs find s<space>
 nnoremap <leader>s :tab split \| :cs find s <C-R>=expand("<cword>")<CR><CR>
 nnoremap <leader>c :tab split \| :cs find c <C-R>=expand("<cword>")<CR><CR>
+nnoremap <leader>a :tab split \| :cs find a <C-R>=expand("<cword>")<CR><CR>
 
 nnoremap <Leader>f :vimgrep /\<<C-R><C-W>\>/j % \| wincmd p \| copen<CR>
 nnoremap <leader>t :TagbarToggle<CR>

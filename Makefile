@@ -68,7 +68,14 @@ codesearch:
 
 .PHONY: codebrowse
 codebrowse:
-	docker run --rm -it -v $(SRC):/workspace:ro freedevorg/linux-codebrowse
+	@if [ ! -p /tmp/cb ]; then mkfifo /tmp/cb; fi
+	@./scripts/cb.sh /tmp/cb &
+	docker run --rm -it \
+		-v $(SRC):/workspace:ro \
+		-v /tmp/cb:/cb \
+		freedevorg/linux-codebrowse
+
+	pkill cb.sh
 
 .PHONY: docker-build
 docker-build:
