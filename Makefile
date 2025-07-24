@@ -41,7 +41,8 @@ vm: check_version ramdisk.img rootfs.img
 
 .PHONY: debug
 debug: check_version kvr.gdb
-	gdb -x kvr.gdb $(OPT) "releases/$(VERSION)/vmlinux"
+	PYTHONPATH=linux/scripts/gdb \
+	    gdb -x kvr.gdb $(OPT) "releases/$(VERSION)/vmlinux"
 
 .PHONY: build
 build: check_version download
