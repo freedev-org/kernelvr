@@ -24,7 +24,7 @@ QEMU_FLAGS= -enable-kvm \
 
 # kvr.gdb base path used to source files
 GDB_BPATH ?= $(PWD)
-GDB_COMMANDS := $(wildcard debug/commands/*.gdb)
+GDB_COMMANDS := $(wildcard debug/commands/*.gdb debug/commands/*.py)
 
 SRC=./linux
 
@@ -55,7 +55,7 @@ download: check_version .versions/$(VERSION)
 .PHONY: switch
 switch: check_version
 	@[ ! -d .versions/$(VERSION) ] && echo "Error: Version $(VERSION) not found. Download it first!" >&2 && exit 1 || true
-	rm ./linux
+	rm -f ./linux
 	ln -fs $(PWD)/.versions/$(VERSION) ./linux
 
 # Install: sudo apt install global cscope universal-ctags
